@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import intro from '../assets/intro.gif';
-// import Sound from 'react-native-sound';
-// import { Audio } from 'expo-av';
 
 export default function Welcome(prop: any) {
   const [Name, setName] = useState('');
-  const [rounds, setrounds] = useState(1);
+  const [rounds, setRounds] = useState(1);
 
-  const handlechange = () => {
+  const handleChange = () => {
     prop.onChange(true, rounds, Name);
   };
 
@@ -25,112 +23,66 @@ export default function Welcome(prop: any) {
   };
 
   const HandlePlaySound = async (snd: any) => {
-    // const sound = new Sound('click.mp3', Sound.MAIN_BUNDLE, (error) => {
-    //   if (error) {
-    //     console.log('failed to load the sound', error);
-    //     return;
-    //   }
-    //   // loaded successfully
-    //   console.log('duration in seconds: ' + sound.getDuration() + 'number of channels: ' + sound.getNumberOfChannels());
-    //   // Play the sound with an onEnd callback
-    //   sound.play((success) => {
-    //     if (success) {
-    //       console.log('successfully finished playing');
-    //     } else {
-    //       console.log('playback failed due to audio decoding errors');
-    //     }
-    //   });
-    // });
-    // sound.release();
-    // const soundObj = new Audio.Sound();
-    // try{
-    //   let source = snd;
-    //   await soundObj.loadAsync(source);
-    //   await soundObj.playAsync()
-    //   .then(async playbackStatus =>{
-    //     setTimeout(()=>{
-    //       soundObj.unloadAsync();
-    //     },playbackStatus.playableDurationMillis);
-    //   })
-    //   .catch((err)=>{
-    //     console.log(err);
-    //   });
-
-    // }catch(err){
-    //   console.log(err);
-    // }
+    // handle sound if needed
   };
+
   useEffect(() => {
     HandlePlaySound(Sounds.intro);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          fontSize: 25,
-          borderRadius: 10,
-          backgroundColor: 'tomato',
-          width: '98%',
-          textAlign: 'center',
-          marginHorizontal: 20,
-          paddingVertical: 10,
-          color: 'white',
-          marginTop: 10,
-          fontWeight: 'bold',
-        }}>
-        Rock Paper Scissor
-      </Text>
+      <Text style={styles.title}>Rock Paper Scissors</Text>
+
       <View style={styles.gifContainer}>
         <Image style={styles.gif} source={intro} />
       </View>
-      <Text
-        style={{
-          fontSize: 20,
-          color: 'red',
-          marginBottom: 20,
-          fontWeight: 'bold',
-        }}>
-        Let's Plays
-      </Text>
+
+      <Text style={styles.subTitle}>Let's Play</Text>
+
       <TextInput
-        style={styles.Inp}
-        placeholder="Name"
+        style={styles.input}
+        placeholder="Enter your name"
         value={Name}
-        onChangeText={txt => {
-          setName(txt);
-        }}
+        onChangeText={setName}
+        placeholderTextColor="#aaa"
       />
-      <Text style={styles.text}>No. Of Round </Text>
-      <View style={styles.butCont}>
+
+      <Text style={styles.label}>Number of Rounds</Text>
+
+      <View style={styles.roundControl}>
         <TouchableOpacity
           onPress={() => {
             if (rounds > 1) {
-              setrounds(rounds - 1);
+              setRounds(rounds - 1);
               HandlePlaySound(Sounds.click);
             }
           }}>
-          <Text style={styles.roundButtons}>-</Text>
+          <Text style={styles.roundButton}>−</Text>
         </TouchableOpacity>
-        <Text style={styles.roundTxt}>{rounds}</Text>
+
+        <Text style={styles.roundText}>{rounds}</Text>
+
         <TouchableOpacity
           onPress={() => {
             if (rounds < 10) {
-              setrounds(rounds + 1);
+              setRounds(rounds + 1);
               HandlePlaySound(Sounds.click);
             } else {
-              alert('Max round is Reached');
+              alert('Maximum round is reached');
             }
           }}>
-          <Text style={styles.roundButtons}>+</Text>
+          <Text style={styles.roundButton}>+</Text>
         </TouchableOpacity>
       </View>
+
       <TouchableOpacity
+        style={styles.playButton}
         onPress={() => {
-          handlechange();
+          handleChange();
           HandlePlaySound(Sounds.click);
         }}>
-        <Text style={styles.playBtn}>Play</Text>
+        <Text style={styles.playButtonText}>Play</Text>
       </TouchableOpacity>
     </View>
   );
@@ -139,87 +91,93 @@ export default function Welcome(prop: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ccf2ff',
-    // justifyContent: "center",
     alignItems: 'center',
-    borderColor: 'lightgrey',
-    borderWidth: 3,
+    paddingTop: 30,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#4a47a3',
+    backgroundColor: '#a3c9f9',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 12,
+    marginBottom: 20,
   },
   gifContainer: {
-    width: '98%',
+    width: '90%',
     height: 200,
+    borderRadius: 10,
     overflow: 'hidden',
-    marginTop: 30,
-    marginBottom: 40,
-    borderColor: 'orange',
-    borderRadius: 5,
+    marginBottom: 20,
     borderWidth: 2,
+    borderColor: '#8ecae6',
   },
   gif: {
     width: '100%',
     height: '100%',
   },
-  text: {
-    fontSize: 15,
-    marginTop: 30,
-    fontWeight: '500',
-    color: 'gray',
+  subTitle: {
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#3d405b',
+    marginBottom: 20,
   },
-  Inp: {
+  input: {
+    width: '80%',
     fontSize: 18,
-    backgroundColor: 'white',
-    borderRadius: 2,
-    width: 200,
-    borderWidth: 2,
-    borderColor: 'white',
-    borderBottomColor: 'lightgray',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginVertical: 5,
-    color: '#884dff',
+    borderWidth: 1,
+    borderColor: '#dcdcdc',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#fff',
+    color: '#333',
+    marginBottom: 20,
   },
-  butCont: {
-    width: 300,
-    display: 'flex',
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: 10,
+  },
+  roundControl: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
     marginBottom: 30,
   },
-  roundButtons: {
-    width: 40,
-    height: 40,
-    fontWeight: 'bold',
+  roundButton: {
     fontSize: 30,
-    textAlign: 'center',
-    backgroundColor: '#ccffcc',
-    color: 'green',
-    textAlignVertical: 'center',
-    borderRadius: 5,
-    borderColor: '#80ff80',
-    borderWidth: 2,
-  },
-  roundTxt: {
-    paddingVertical: 8,
-    fontWeight: 'bold',
-    fontSize: 18,
     width: 50,
+    height: 50,
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: 'white',
-    color: 'blue',
+    backgroundColor: '#ddefff',
+    borderRadius: 25,
+    marginHorizontal: 15,
+    borderColor: '#7ea1ff',
+    borderWidth: 2,
+    color: '#2a60ff',
+    fontWeight: 'bold',
   },
-  playBtn: {
-    width: 100,
-    backgroundColor: '#3385ff',
-    padding: 6,
+  roundText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#555',
+  },
+  playButton: {
+    backgroundColor: '#4a47a3',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  playButtonText: {
+    color: '#fff',
     fontSize: 20,
-    borderRadius: 10,
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 20,
-    borderColor: 'royalblue',
-    borderWidth: 3,
+    fontWeight: '600',
   },
 });
